@@ -1,0 +1,42 @@
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <img src="/icons/logo.svg" class="sidebar-icon" alt="Gucci">
+    </div>
+
+    <ul class="sidebar-links-list">
+        <li class="sidebar-navigation-block">
+            <a class="sidebar-navigation-link" href="/admin/user">Users</a>
+        </li>
+        <li class="sidebar-navigation-block submenu-label">
+            <a class="sidebar-navigation-link">Stores</a>
+        </li>
+        <li class="submenu">
+            <ul>
+                <li class="sidebar-navigation-block">
+                    <a class="sidebar-navigation-link" href="/admin/store">Stores List</a>
+                </li>
+                <li class="sidebar-navigation-block">
+                    <a class="sidebar-navigation-link" href="/admin/group-store">Stores Group</a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-navigation-block">
+            <a class="sidebar-navigation-link" href="/admin/help">Help section</a>
+        </li>
+	</ul>
+	<div class="logout-button">
+        <a class="sidebar-navigation-link" href="/admin/logout">Logout</a>
+	</div>
+</nav>
+
+<script>
+	$('li a').each(function() {
+		if (window.location.pathname.startsWith($(this).attr('href'))) {
+			$(this).parent('li').addClass('active')
+			$(this).closest('.submenu').addClass('visible')
+		}
+	})
+	$(document).on('click', '.submenu-label', function() {
+		$(this).next('.submenu').toggleClass('visible')
+	})
+</script>

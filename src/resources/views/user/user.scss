@@ -1,0 +1,55 @@
+.users-toolbar {
+    .rb-input {
+        width: 100%;
+    }
+
+    .outlined-select {
+        width: 100%;
+    }
+
+    .user-create-button {
+        display: block;
+        text-align: center;
+    }
+}
+
+.users-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+    background: transparent;
+    transition: background-color 0.25s, opacity 0.15s;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.7;
+    }
+
+    &.checked{
+        background: #000;
+    }
+}
+
+.create-user-btn {
+    width: 120px;
+}
+
+.create-user-content {
+    padding: 40px 15px;
+
+    .select2 .select2-selection.select2-selection--single {
+        background: #fff url("/icons/arrow-down.svg") right 10px center / 15px no-repeat;
+    }
+
+    .select2.select2-container--disabled .select2-selection.select2-selection--single {
+        background-color: #E5E5EA;
+    }
+}
+
+
+.was-validated .create-user-select:invalid + .select2 .select2-selection{
+    border-color: #dc3545!important;
+}
+.was-validated .create-user-select:valid + .select2 .select2-selection{
+    border-color: #28a745!important;
+}

@@ -1,0 +1,208 @@
+@layout('layout/app')
+
+@section('content')
+	<div class="container">
+		<header class='list-header'>
+			Users
+		</header>
+
+		<div class='row users-toolbar'>
+			<div class='col-6'>
+				<input type='text' id="search-users-table" placeholder='Search by name or email' class="rb-input">
+			</div>
+			<div class='col-2 offset-2 d-flex'>
+				<select id="users-status-filter" name="country" class="outlined-select">
+					<option value>Select status</option>
+					<option value="enabled">Enabled</option>
+					<option value="disabled">Disabled</option>
+				</select>
+			</div>
+			<div class='col-2'>
+				<a href="/admin/user/create" class="dark-btn user-create-button">Create</a>
+			</div>
+		</div>
+
+		<table id='usersList' class='users-table custom-table'></table>
+	</div>
+@endsection
+
+@section('script')
+	@super
+	@include('partials/dataTables/index')
+	@include('partials/select2/index')
+	@include('partials/underscore/index')
+	@include('partials/confirm/confirm')
+
+	<script type='text/javascript'>
+		$(document).ready(function () {
+			var table = new Table(
+				'#usersList',
+				'/api/user_white_list/data_table',
+				[
+					{title: 'Name', data: 'firstName', searchable: true, orderable: true, width: '30%', defaultContent: ""},
+					{title: 'Last name', data: 'lastName', searchable: true, orderable: false, visible: false, defaultContent: ""},
+					{title: 'Email', data: 'email', searchable: true, orderable: false, visible: false, defaultContent: ""},
+					{title: 'Alias', data: 'alias', searchable: true, orderable: true, width: '20%', defaultContent: ""},
+					{title: 'Business Title', data: 'businessTitle', searchable: false, orderable: true, width: '20%', defaultContent: ""},
+					{title: 'Login', data: 'isExternal', searchable: false, orderable: false, width: '10%', defaultContent: false},
+					{title: 'ID', data: '_id', visible: false},
+					{title: 'Enabled', data: 'disabled', searchable: false, orderable: false, width: '10%', className: 'dt-body-center'},
+					{title: 'createdAt', data: 'createdAt', visible: false, orderable: true, defaultContent: ''},
+					{title: 'Action', data: null, searchable: false, orderable: false, width: '10%', className: 'dt-body-center'},
+				],
+				[
+					{
+						targets: 0,
+						data: null,
+						render: function (data, x, row) {
+							return '<div class="user-registry">\
+									<div class="primary-data">' + row.firstName + ' ' + row.lastName + '</div>\
+									<div class="user-registry-email"><a href="mailto:' + row.email + '">' + row.email + '</a></div>\
+								</div>';
+						}
+					},
+					{
+						targets: 5,
+						data: null,
+						render: function (data, x, row) {
+							return data ? 'Guest' : 'SSO'
+						}
+					},
+					{
+						targets: 7,
+						data: null,
+						render: function (data, x, row) {
+							return '<button class="users-checkbox ' + (data === 0 ? '' : 'checked') + '" id="' + row._id + '" disabledAt=' + data + '></button>'; //True if user is disabled aka data is null || undefined
+						}
+					},
+					{
+						targets: -1,
+						data: null,
+						render: function (data, x, row) { //@TODO edit href to user detail
+							return '<div class="table-actions-icons">\
+                                <a href="/admin/user/' + data._id + '"><img src="/icons/edit.svg" class="icon" alt="Edit user"></a>\
+                                <img class="delete-record-icon icon" src="/icons/trash.svg" alt="Delete" deleteUrl="/api/user_white_list/' + data._id + '" >\
+                            </div>';
+						}
+					},
+				],
+				[[ 8, "desc" ]],
+                'tp',
+				function () { // drawCallback
+                    $('.delete-record-icon').on('click', function(e) {
+                        var self = this;
+                        $.confirm({
+                            title: 'Delete user',
+                            content: 'Are you sure you want to delete this user?',
+                            backgroundDismiss: true,
+                            buttons: {
+                                ok: {
+                                    text: 'Delete',
+                                    keys: ['enter'],
+                                    btnClass: 'btn-dark confirm-btn',
+                                    action: function(){
+                                        $.ajax({
+                                            type: 'DELETE',
+                                            url: $(self).attr('deleteUrl'),
+											retryLimit: 3,
+                                            success: function (msg) {
+                                                table.draw();
+                                            },
+                                            error: function (xhr, ajaxOptions, thrownError) {
+                                                this.retryLimit--;
+                                                if (this.retryLimit > 0) {
+                                                    //prova ancora, max 3 volte
+                                                    $.ajax(this);
+                                                    return;
+                                                } else {
+													// @TODO - show error alert
+                                                }
+                                                return;
+                                            }
+                                        })
+                                    }
+                                },
+                                cancel: {
+                                    text: 'Cancel',
+                                    btnClass: 'confirm-btn',
+                                    action: function(){}
+                                }
+                            }
+                        });
+                    })
+                }
+			);
+
+			$('#search-users-table').keyup(_.debounce(() => {
+				var value = $('#search-users-table').val()
+				if (value.length > 2) {
+					table.search(value, true).draw();
+				} else {
+					table.search("", true).draw();
+				}
+			}, 500));
+
+			table.on('click', '.users-checkbox', function (e) {
+				e.preventDefault();
+				var isDisabled = $(this).attr('disabledAt');
+				var id = $(this).attr('id');
+				var checkbox = this;
+				var prompt = isDisabled == 0 ? 'enable' : 'disable';
+
+				$.confirm({
+					title: 'User enablement',
+					content: 'Do you want to ' + prompt + ' this user?',
+					backgroundDismiss: true,
+					buttons: {
+						ok: {
+							text: prompt,
+							keys: ['enter'],
+							btnClass: 'btn-dark',
+							action: function () {
+								$.ajax({
+									type: "PATCH",
+									url: '/api/user_white_list/' + id,
+									contentType: 'application/json',
+									data: JSON.stringify({
+										"disabledAt": isDisabled == 0 ? null : new Date().toISOString(),
+									}),
+									retryLimit: 3,
+									success: function (msg) {
+										$(checkbox).toggleClass('checked');
+										table.draw();
+									},
+									error: function (xhr, ajaxOptions, thrownError) {
+										this.retryLimit--;
+										if (this.retryLimit > 0) {
+											//prova ancora, max 3 volte
+											$.ajax(this);
+											return;
+										} else {
+											// @TODO - show error alert
+										}
+										return;
+									}
+								});
+							}
+						},
+						cancel: {
+							text: 'Cancel',
+							action: function () {
+							}
+						}
+					}
+				});
+			})
+
+			$("#users-status-filter").change(function () {
+				if (this.value === "disabled") {
+					table.columns(7).search(0).draw();
+				} else if (this.value === "enabled") {
+					table.columns(7).search(1).draw();
+				} else {
+					table.columns(7).search("", true).draw();
+				}
+			})
+		})
+	</script>
+@endsection

@@ -1,0 +1,13 @@
+@layout('layout/auth')
+
+@section('login_logo')
+@endsection
+
+@section('content')
+<div class="login-container">
+    <img src="/icons/logo_RB.svg" class="logo" alt="Logo Gucci">
+    <form method="post" action="/admin/login">
+        <button type="submit" class="login-button m-b-30 m-t-30">Sign in</button>
+    </form>
+</div>
+@endsection
