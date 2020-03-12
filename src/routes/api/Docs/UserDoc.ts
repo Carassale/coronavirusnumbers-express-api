@@ -1,5 +1,5 @@
 /**
- * @api {post} /api/v1/user/:deviceToken/status/:country_id User notification status for country
+ * @api {get} /api/v1/user/:deviceToken/status/:country_id User notification status for country
  * @apiGroup User
  * @apiName UserNotificationStatus
  * @apiDescription Returns if the user already has notifications active for the selected country id.
