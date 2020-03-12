@@ -16,7 +16,7 @@
  * @apiSuccess {String} countries.province Country province.
  * @apiSuccess {Date} countries.updatedAt Country last update.
  * @apiSuccess {Number} countries.latitude Country geo latitude.
- * @apiSuccess {Number} countries.longitude Country geo latitude.
+ * @apiSuccess {Number} countries.longitude Country geo longitude.
  * @apiSuccess {Number} countries.confirmed Confirmed patients.
  * @apiSuccess {Number} countries.recovered Recovered patients.
  * @apiSuccess {Number} countries.deaths Deaths.
@@ -28,7 +28,7 @@
  */
 
 /**
- * @api {post} /api/v1/country/:id Country show
+ * @api {get} /api/v1/country/:id Country show
  * @apiGroup Country
  * @apiName CountryShow
  * @apiDescription Returns the information for the selected country.
@@ -41,7 +41,7 @@
  * @apiSuccess {String} province Country province.
  * @apiSuccess {Date} updatedAt Country last update.
  * @apiSuccess {Number} latitude Country geo latitude.
- * @apiSuccess {Number} longitude Country geo latitude.
+ * @apiSuccess {Number} longitude Country geo longitude.
  * @apiSuccess {Number} confirmed Confirmed patients.
  * @apiSuccess {Number} recovered Recovered patients.
  * @apiSuccess {Number} deaths Deaths.
