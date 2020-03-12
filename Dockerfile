@@ -4,6 +4,9 @@ EXPOSE 8080
 
 USER node
 
+RUN mkdir /home/node/app
+WORKDIR /home/node/app
+
 RUN mkdir src
 COPY src ./src
 COPY tools ./tools
