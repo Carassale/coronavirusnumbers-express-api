@@ -1,0 +1,116 @@
+table.custom-table {
+    width: 100%;
+
+    .custom-table-button {
+        border: 1px solid;
+        border-radius: 0;
+        background: transparent;
+        color: #000000;
+
+        &:hover {
+            color: #ffffff;
+            background-color: #000000;
+        }
+    }
+
+    tbody {
+        color: #8e8e93;
+    }
+}
+
+table.dataTable {
+    thead {
+        th {
+            text-transform: uppercase;
+            font-size: 0.750em;
+            font-weight: 600;
+            border: none;
+            padding: 16px;
+
+            &.sorting_disabled {
+                padding-left: 0;
+            }
+        }
+
+        .sorting {
+            background : transparent url('../icons/sort-icon.svg') left center / 12px no-repeat;
+            cursor: pointer;
+        }
+
+        .sorting_asc {
+            background : transparent url('../icons/sort-up.svg') left center / 12px no-repeat;
+            cursor: pointer;
+        }
+
+        .sorting_desc {
+            background : transparent url('../icons/sort-down.svg') left center / 12px no-repeat;
+            cursor: pointer;
+        }
+    }
+
+    tbody {
+        tr.odd {
+            background-color: #f0f0f0;
+        }
+
+        td {
+            border: none;
+            vertical-align: middle;
+            padding: 16px 0;
+            font-weight: 600;
+
+            &:first-child {
+                padding-left: 16px;
+                padding-right: 8px;
+            }
+
+            &:last-child {
+                padding-right: 16px;
+            }
+
+            .primary-data {
+                color: #000;
+                font-weight: 600;
+            }
+        }
+
+    }
+}
+
+/* Override DT default */
+.dt-body-center {
+    text-align: center;
+}
+
+
+/* PAGINATION */
+.dataTables_paginate {
+    margin-top: 40px;
+    font-size: 0.850em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    opacity: 0.8;
+}
+
+.dataTables_paginate .paginate_button {
+    opacity: 0.3;
+    margin: 25px;
+    font-weight: 400;
+    background: none;
+    cursor: pointer;
+    padding: 8px 20px;
+}
+
+.dataTables_paginate > * {
+    border: none;
+    background: transparent;
+}
+
+.paginate_button.current, .paginate_button.next, .paginate_button.previous {
+    font-weight: 600;
+    opacity: 1;
+}

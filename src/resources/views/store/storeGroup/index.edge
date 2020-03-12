@@ -1,0 +1,138 @@
+@layout('layout/app')
+
+@section('content')
+<div class="container">
+    <header class='list-header'>
+        Stores Group
+    </header>
+
+    <div class='row stores-toolbar justify-content-between'>
+        <div class='col-6'>
+            <input type='text' name="search-table" id="search-table" placeholder='Search...' class="rb-input">
+        </div>
+        <div class='col-2'>
+            <a href="/admin/group-store/create" class="dark-btn stores-create-button">Create</a>
+        </div>
+    </div>
+
+    <table id='storeGroupList' class='stores-table custom-table'></table>
+</div>
+@endsection
+
+@section('script')
+@super
+@include('partials/dataTables/index')
+@include('partials/underscore/index')
+@include('partials/confirm/confirm')
+
+<script type='text/javascript'>
+	$(document).ready(function () {
+		var table = new Table(
+			'#storeGroupList',
+			'/api/store-group/data_table',
+			[
+				{title: 'Group name', data: 'name', searchable: true, orderable: true, width: '40%'},
+				{title: 'Stores', data: 'stores', searchable: true, orderable: true, width: '50%'},
+				{title: 'ID', data: '_id', visible: false},
+				{title: 'createdAt', data: 'createdAt', visible: false, orderable: true, defaultContent: ''},
+				{
+					title: 'Action',
+					data: null,
+					searchable: false,
+					orderable: false,
+					width: '10%',
+					className: 'dt-body-center'
+				},
+			],
+			[
+				{
+					targets: 0,
+					data: null,
+					render: function (data, x, row) {
+						return '<span class="primary-data">' + data + '</span>'
+					}
+				},
+				{
+					targets: 1,
+					data: null,
+					render: function (data, x, row) {
+						if (data) {
+							var ul = '';
+							data.map(function (el) {
+								ul = ul + '<li>' + el.text + '</li>';
+							})
+							return '<ul class="user-stores-list">' + ul + '</ul>';
+						}
+						return null
+					}
+				},
+				{
+					targets: -1,
+					data: null,
+					render: function (data, x, row) {
+						return '<div class="table-actions-icons">\
+                                <a href="/admin/group-store/' + data._id + '"><img src="/icons/edit.svg" class="icon" title="Edit group" alt="Edit group"></a>\
+                                <img class="delete-record-icon icon" src="/icons/trash.svg" title="Delete group" alt="Delete group" deleteUrl="/api/store-group/' + data._id + '" >\
+                            </div>';
+					}
+				}
+			],
+			[[3, "desc"]],
+            'tp',
+                function () { // drawCallback
+                    $('.delete-record-icon').on('click', function(e) {
+                        var self = this;
+                        $.confirm({
+                            title: 'Delete group',
+                            content: 'Are you sure you want to delete this group?',
+                            backgroundDismiss: true,
+                            buttons: {
+                                ok: {
+                                    text: 'Delete',
+                                    keys: ['enter'],
+                                    btnClass: 'btn-dark confirm-btn',
+                                    action: function(){
+                                        $.ajax({
+                                            type: 'DELETE',
+                                            url: $(self).attr('deleteUrl'),
+                                            retryLimit: 3,
+                                            success: function (msg) {
+                                                table.draw();
+                                            },
+                                            error: function (xhr, ajaxOptions, thrownError) {
+                                                this.retryLimit--;
+                                                if (this.retryLimit > 0) {
+                                                    //prova ancora, max 3 volte
+                                                    $.ajax(this);
+                                                    return;
+                                                } else {
+                                                    // @TODO - show error alert
+                                                }
+                                                return;
+                                            }
+                                        })
+                                    }
+                                },
+                                cancel: {
+                                    text: 'Cancel',
+                                    btnClass: 'confirm-btn',
+                                    action: function(){}
+                                }
+                            }
+                        });
+                    })
+                }
+            );
+
+		// Autocomplete / Automatic search on store name/code
+		$('#search-table').keyup(_.debounce(() => {
+			var value = $('#search-table').val()
+			if (value.length > 2) {
+				table.search(value, true).draw();
+			} else {
+				table.search("", true).draw();
+			}
+		}, 500));
+	});
+</script>
+@endsection

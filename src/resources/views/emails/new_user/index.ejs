@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Welcome</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <!--[if gte mso 9]>
+        <style type="text/css">
+            .body {
+                background-color: #EFEFF4;
+                border: none;
+            }
+
+            .logo-container {
+                background-color: #000000;
+                border: 30px solid #000000;
+            }
+
+            .main {
+                background-color: #FFFFFF;
+                border: 30px solid #FFFFFF;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body>
+<div style="background-color: #EFEFF4;margin: 0;font-family: Helvetica;font-weight: 200;padding: 0 10%;" class="body">
+    <div style="background-color: #000000;padding: 30px;" class="logo-container">
+        <img src="<%= baseUrl %>/images/logo.png" alt="Gucci logo" role="img" style="width:100px;max-height:30px;" width="100">
+    </div>
+
+    <div style="background-color: #FFFFFF;box-shadow: 0 16px 16px 0 rgba(0,0,0,0.04);padding: 30px;" class="main">
+        <div style="font-size: 15px; color: #000000;">
+            <h1 style="font-size: 26px;font-weight: 400;margin:0;mso-line-height-rule:exactly;">
+                Hi <%= firstName %>,
+            </h1>
+
+            <div>Welcome in Runner Booster APP!</div>
+            <div>Set your password</div>
+
+            <div style=" text-align: center;margin: 37px 0;">
+                <a href="<%= baseUrl %>/admin/auth/reset_password?token=<%= token %>"
+                   target="_blank"
+                   style="display: block;border: 1px solid #000000;border-radius: 6px;font-size: 19px;color: #000000;text-decoration: none;cursor: pointer;font-weight: 400;padding: 15px;max-width: 250px; margin: auto;">
+                    Click here</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
