@@ -44,7 +44,7 @@ agenda.start().then(async () => {
 	let found = await agenda.jobs('update-country-data')
 	if (found.length == 0) {
 		const minutelyUpdate = agenda.create('update-country-data')
-		await minutelyUpdate.repeatEvery('1 minute').save()
+		await minutelyUpdate.repeatEvery('10 minute').save()
 	}
 })
 

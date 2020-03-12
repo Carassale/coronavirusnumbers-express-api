@@ -1,11 +1,10 @@
 import * as mongoose from "mongoose"
 
 interface Country extends mongoose.Document {
-	id: string
+	id?: string
 	originalId: number
 
 	name: string
-	province: string
 
 	latitude: number
 	longitude: number
@@ -22,7 +21,6 @@ const CountrySchema = new mongoose.Schema({
 	id: String,
 	originalId: Number,
 	name: String,
-	province: String,
 	latitude: Number,
 	longitude: Number,
 	confirmed: Number,
