@@ -1,0 +1,78 @@
+/ src
+├── / App
+│   ├── / Controllers
+│   │   ├── / Api
+│   │	│   ├── UserApiControllers.ts
+│   │	│   └── ...
+│   │   └── / Web
+│   │	    ├── UserWebControllers.ts
+│   │	    └── ...
+│   ├── / Events
+│   │   ├── / UserEvents
+│   │	│   ├── SendWelcomeMail.ts
+│   │	│   └── ...
+│   │   └── / ...
+│   ├── / Helpers
+│   │   ├── UserHelper.ts
+│   │   └── ...
+│   ├── / Jobs
+│   │   ├── index.ts
+│   │   ├── CheckTimeoutJobs.ts
+│   │   └── ...
+│   ├── / Listeners
+│   │   ├── / UserListeners
+│   │	│   ├── UserCreated.ts
+│   │	│   └── ...
+│   │   └── / ...
+│   ├── / Middleware
+│   │   ├── CheckPermission.ts
+│   │   └── ...
+│   ├── / Models
+│   │   ├── User.ts
+│   │   └── ...
+│   ├── / Repositories
+│   │   ├── UserRepository.ts
+│   │   └── ...
+│   ├── / Services
+│   │   ├── UserService.ts
+│   │   └── ...
+│   └── / Validators
+│   │   ├── / UserValidator
+│   │	│   ├── UserCreate.ts
+│   │	│   ├── UserUpdate.ts
+│   │	│   └── ...
+│   │   └── / ...
+├── / config
+│   ├── app.ts
+│   └── ...
+├── / public
+│   ├── / css
+│   ├── / fonts
+│   ├── / icons
+│   ├── / images
+│   └── / js
+├── / resources
+│   ├── / js
+│   ├── / lang
+│   │   ├── / en
+│   │   └── Translations.ts
+│   ├── / sass
+│   │   ├── root.scss
+│   │   └── ...
+│   └── / views
+│       ├── / auth
+│       ├── / layout
+│       ├── / partials
+│       └── ...
+├── / routes
+│   ├── / api
+│   │   ├── userRoutes.ts
+│   │   └── ...
+│   ├── / web
+│   │   ├── userRoutes.ts
+│   │   └── ...
+│   ├── apiRoutes.ts
+│   └── webRoutes.ts
+├── / test
+│   └── ...
+└── server.ts

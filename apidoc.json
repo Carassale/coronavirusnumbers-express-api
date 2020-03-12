@@ -1,0 +1,11 @@
+{
+    "name": "Orso Bruno APIs",
+    "version": "0.1.0",
+    "description": "Orso Bruno APIs Documentation",
+    "title": "Orso Bruno",
+    "url" : "",
+    "template": {
+        "withCompare": false,
+        "withGenerator": true
+    }
+  }

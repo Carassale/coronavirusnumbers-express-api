@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf build",
+    "copy-assets": "ts-node tools/copyAssets.ts",
+    "build:css": "node-sass src/resources/views/_style/root.scss build/public/css/style.css --output-style compressed",
+    "build": "npm run clean && tsc && npm run copy-assets && npm run build:css",
+    "start": "npm run build && node ./build/server.js",
+    "docs": "apidoc -i src/routes/api/Docs -o docs/"
   },
   "repository": {
     "type": "git",
