@@ -43,10 +43,15 @@ const AppConfig = {
 
 		let mongoDB = process.env.MONGO_DB as string
 		if (!mongoDB) {
-			mongoDB = "runner_booster_db"
+			mongoDB = "orso_bruno"
 		}
 
-		let uri = `mongodb://${process.env.MONGO_HOST}:${mongoPort}/${mongoDB}?${option}`
+		let host = process.env.MONGO_HOST as string
+		if (!host) {
+			host = "localhost"
+		}
+
+		let uri = `mongodb://${host}:${mongoPort}/${mongoDB}?${option}`
 		return BaseConfig.logAndReturn(uri)
 	},
 
