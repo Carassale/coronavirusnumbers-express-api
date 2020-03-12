@@ -16,7 +16,4 @@ RUN npm install
 
 RUN npm run build
 
-COPY script/start.sh ./script/start.sh
-RUN ["chmod", "+x", "script/start.sh"]
-
-ENTRYPOINT ["./script/start.sh"]
+CMD ["node", "./build/server.js"]
