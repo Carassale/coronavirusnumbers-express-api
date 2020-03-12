@@ -1,0 +1,21 @@
+@layout('layout/app')
+
+@section('sidebar')
+@endsection
+
+@section('content')
+    <div style="margin-top:100px" class="container text-center">
+		<h3>ERROR</h3>
+		<h1>{{{message}}}</h1>
+		<br />
+        @if(stackTrace)
+        <div><code>{{stackTrace}}</code></div>
+        @endif
+		<button onclick="goBack()" class="btn btn-primary">Go back</button>
+        <script>
+			function goBack() {
+				window.history.back();
+			}
+        </script>
+	</div>
+@endsection

@@ -1,0 +1,50 @@
+@layout('layout/auth')
+
+@section('content')
+    <form action="/admin/auth/reset_password?token={{token}}" method="post">
+
+        <p class="reset-title">Set your password</p>
+
+        <div class="row reset-row">
+            <div class="col-8 offset-2 col-md-4 offset-md-4">
+                <div class="input-group">
+                    <input type="hidden" name="token" value="{{ errors.token ? errors.token.old : token }}">
+                    @if(errors.token)
+                    <div class="invalid-feedback" style="display: block">{{ errors.token.message }}</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="row reset-row">
+            <div class="col-8 offset-2 col-md-4 offset-md-4">
+                <div class="input-group">
+                    <input type="password" name="password" class="reset-input" placeholder="Password..."
+                           required />
+                    @if(errors.password)
+                    <div class="invalid-feedback" style="display: block">{{ errors.password.message }}</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="row reset-row">
+            <div class="col-8 offset-2 col-md-4 offset-md-4">
+                <div class="input-group">
+                    <input type="password" name="password_confirm" placeholder="Repeat your password..." class="reset-input"
+                           required />
+                    @if(errors.password_confirm)
+                    <div class="invalid-feedback" style="display: block">{{ errors.password_confirm.message }}</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="row submit-row">
+            <div class="col-6 offset-3 col-md-2 offset-md-5">
+                <input type="submit" value="CONFIRM" class="reset-submit">
+            </div>
+        </div>
+
+    </form>
+@endsection

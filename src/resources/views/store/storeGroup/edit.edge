@@ -1,0 +1,113 @@
+@layout('layout/app')
+
+@section('content')
+<header class='detail-header'>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <div class="page-title ">
+                    <div class="title">{{group ? 'Edit' : 'Create'}}</div>
+                    <div class="subtitle">Store Group</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container create-user-content">
+    <form action="/admin/group-store/{{group._id ? group._id : ''}}" method="post">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="name">Group Name</label>
+                    <input type="text" class="form-control rb-input" id="name" name="name" placeholder="Group Name"
+                           value="{{group.name ? group.name : ''}}" required>
+                </div>
+            </div>
+
+            <div class="w-100"></div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="stores">Stores</label>
+                    <select style="width: 100%" id="stores" name="stores" multiple="multiple" required></select>
+                </div>
+            </div>
+
+            <div class="w-100"></div>
+            <div class="col text-right">
+                <input type="submit" value="Save" class="dark-btn create-user-btn">
+            </div>
+        </div>
+    </form>
+</div>
+@endsection
+
+@section('script')
+@super
+@include('partials/select2/index')
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#stores').select2({
+			placeholder: { id: '-1', text: 'Select a store' },
+			ajax: {
+				url: '/api/store/data_table',
+				dataType: 'json',
+				data: function (params) {
+					return {
+						columns: [{
+							data: "name",
+							searchable: true,
+							orderable: true,
+							search: {value: "", regex: false}
+						}, {
+							data: "storeCode",
+							searchable: true,
+							orderable: true,
+							search: {value: "", regex: false}
+						}, {
+							data: "groupName",
+							default: undefined,
+							searchable: false,
+							orderable: false,
+							search: {value: "", regex: false}
+						}, {
+							data: "meta.statusCode",
+                            default: "-",
+							searchable: false,
+							orderable: false,
+							search: {value: "", regex: false}
+						}],
+						search: {
+							value: params.term,
+							regex: true
+						},
+						order: [
+							{column: 2, dir: "asc"},
+							{column: 1, dir: "asc"}
+						],
+						start: (params.page || 0) * 10,
+						length: 10
+					};
+				},
+				processResults: function (data) {
+					return {
+						results: data.data.map(d => {
+							return {
+								id: d.storeCode,
+								text: d.storeCode + ' - ' + d.name,
+								disabled: !!d.groupName || d.meta.statusCode !== "ACTIVE"
+							}
+						})
+					};
+				}
+			}
+		});
+
+		@each(store in group.stores)
+        option = new Option("{{store.text}}", "{{store.storeCode}}", true, true);
+        $('#stores').append(option).trigger('change');
+        @endeach
+	});
+</script>
+@endsection

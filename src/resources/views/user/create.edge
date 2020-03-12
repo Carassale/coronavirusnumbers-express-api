@@ -1,0 +1,142 @@
+@layout('layout/app')
+
+@section('content')
+<form id="create-user-form" action="/admin/user" method="POST" class="needs-validation" novalidate>
+    <header class='detail-header'>
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <div class="page-title ">
+                        <div class="title">Create</div>
+                        <div class="subtitle">USER</div>
+                    </div>
+                </div>
+
+                <div class="col-3 offset-6 d-flex align-items-center">
+                    <input type="submit" value="Save" class="dark-btn create-user-btn">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container create-user-content">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="firstName">Name</label>
+                    <input type="text" class="form-control rb-input" id="firstName" name="firstName" placeholder="Name" required>
+                    <div class="invalid-feedback">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="lastName">Surname</label>
+                    <input type="text" class="form-control rb-input" id="lastName" name="lastName" placeholder="Surname" required>
+                    <div class="invalid-feedback">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control rb-input" id="email" name="email" placeholder="Email" value="{{ errors.email ? errors.email.old : '' }}" required>
+                    @if(errors.email)
+                    <div class="invalid-feedback" style="display: block">{{ errors.email.message }}</div>
+                    @endif
+                    <div class="invalid-feedback">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="businessTitle">Business title</label>
+                    <input type="text" class="form-control rb-input" id="businessTitle" name="businessTitle" placeholder="Business title" required>
+                    <div class="invalid-feedback">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="jobFamily">Job family</label>
+                    <select id="jobFamily" name="jobFamily" class="form-control create-user-select" required>
+                        <option></option>
+                        <option value="Retail Operations">Retail operations</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="jobLocation">Job location</label>
+                    <select id="jobLocation" name="jobLocation" class="form-control create-user-select" required>
+                        <option></option>
+                        <option value="Office">Office</option>
+                        <option value="Store">Store</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="loginSelect">Login</label>
+                    <select id="loginSelect" name="loginSelect" class="form-control create-user-select" required>
+                        <option></option>
+                        <option value="sso">SSO</option>
+                        <option value="guest">Guest</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@endsection
+
+
+@section('script')
+    @super
+    @include('partials/select2/index')
+
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            $('#jobFamily').select2({
+                placeholder: 'Select one...'
+            })
+            $('#jobLocation').select2({
+                placeholder: 'Select one...'
+            })
+            $('#loginSelect').select2({
+                placeholder: 'Select one...'
+            })
+
+            var form = document.getElementById('create-user-form');
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        })
+
+    </script>
+@endsection
