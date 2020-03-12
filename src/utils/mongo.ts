@@ -1,8 +1,9 @@
-import * as mongoose from "mongoose"
 import {MongoError} from "mongodb"
 
 import AppConfig from "../config/AppConfig"
 import {logger} from "./logger"
+
+const mongoose = require("mongoose")
 
 let _kill = (err: any) => {
 	logger.error(err)

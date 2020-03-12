@@ -14,8 +14,8 @@ ApiRouter.use(jsonParser)
 ApiRouter.use(expressLogger)
 ApiRouter.use(bodyParser.urlencoded({extended: false}))
 
-ApiRouter.use('/user', UserApiRouter)
-ApiRouter.use('/country', CountryApiRouter)
+ApiRouter.use('/v1/user', UserApiRouter)
+ApiRouter.use('/v1/country', CountryApiRouter)
 
 ApiRouter.get('*', (req: Request, res: Response, next: NextFunction) => {
 	let error = new ResponseError(404, 'Api Not Found')

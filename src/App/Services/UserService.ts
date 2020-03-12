@@ -5,12 +5,12 @@ import BaseService from "./BaseService"
 
 export default class UserService extends BaseService<User> {
 
+	// @ts-ignore
 	repository: UserRepository
+	// @ts-ignore
 	dataHandler: UserDataHandler
 
 	constructor() {
-		super()
-		this.repository = new UserRepository()
-		this.dataHandler = new UserDataHandler()
+		super(new UserRepository(), new UserDataHandler())
 	}
 }

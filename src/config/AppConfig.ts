@@ -50,38 +50,11 @@ const AppConfig = {
 		return BaseConfig.logAndReturn(uri)
 	},
 
-	get triggerNewTimeoutAfter(): number {
-		let time = 600000
-		if (process.env.TRIGGER_TIMEOUT_AFTER) {
-			time = parseInt(process.env.TRIGGER_TIMEOUT_AFTER)
-		}
-		return BaseConfig.logAndReturn(time)
-	},
-
-	get triggerTimeoutResendNewAfter(): number {
-		let time = 60000
-		if (process.env.TRIGGER_TIMEOUT_RESEND_NEW_AFTER) {
-			time = parseInt(process.env.TRIGGER_TIMEOUT_RESEND_NEW_AFTER)
-		}
-		return BaseConfig.logAndReturn(time)
-	},
-
-	get triggerAcceptedTimeoutAfter(): number {
-		let time = 600000
-		if (process.env.TRIGGER_ACCEPTED_TIMEOUT_AFTER) {
-			time = parseInt(process.env.TRIGGER_ACCEPTED_TIMEOUT_AFTER)
-		}
-		return BaseConfig.logAndReturn(time)
-	},
-
-	get saPathImgUrl(): string {
-		let path = process.env.SA_PATH_IMG_URL as string
-		return BaseConfig.logAndReturn(path)
-	},
-
 	get baseUrl(): string {
-		let url = process.env.BASE_URL as string
-		return BaseConfig.logAndReturn(url)
+		let base_url = process.env.BASE_URL as string
+		let port = process.env.PORT as string
+
+		return BaseConfig.logAndReturn(`${base_url}:${port}`)
 	},
 
 	get logLevel(): string {

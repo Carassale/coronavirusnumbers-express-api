@@ -6,9 +6,11 @@ import BaseDataHandler from "../DataHandlers/BaseDataHandler"
 export default abstract class BaseService<T extends Document> {
 
 	protected repository: BaseRepository<T>
-	protected dataHandler: BaseDataHandler
+	protected dataHandler: BaseDataHandler<T>
 
-	protected constructor() {
+	protected constructor(repository: BaseRepository<T>, dataHandler: BaseDataHandler<T>) {
+		this.repository = repository
+		this.dataHandler = dataHandler
 	}
 
 	public async all(): Promise<Array<T>> {
