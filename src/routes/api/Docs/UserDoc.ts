@@ -1,11 +1,11 @@
 /**
- * @api {get} /api/v1/user/:deviceToken/status/:country_id User notification status for country
+ * @api {get} /api/v1/user/:device_token/status/:country_id User notification status for country
  * @apiGroup User
  * @apiName UserNotificationStatus
  * @apiDescription Returns if the user already has notifications active for the selected country id.
  * @apiVersion 0.1.0
  *
- * @apiParam (Query params) {String} deviceToken Device token.
+ * @apiParam (Query params) {String} device_token Device token.
  * @apiParam (Query params) {String} country_id Country id.
  *
  * @apiSuccess {Boolean} active True if notifications are active.

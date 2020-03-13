@@ -1,9 +1,9 @@
 import axios from "axios"
 
 import ArcgisDataHandler from "../DataHandlers/ArcgisDataHandler"
-import CountryService from "./CountryService"
+import CountryService from "../Services/CountryService"
 
-export default class ArcgisService {
+export default class ArcgisHelper {
 
 	baseUrl = "https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/2/query"
 

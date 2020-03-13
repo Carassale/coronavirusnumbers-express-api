@@ -4,33 +4,37 @@ import UserService from "../../../Services/UserService"
 
 export default class UserApiController {
 
-	private countryService: UserService
+	private userService: UserService
 
 	constructor() {
-		this.countryService = new UserService()
+		this.userService = new UserService()
 	}
 
 	public async status(req: Request, res: Response,) {
-		let device_token = req.query.device_token
+		let deviceToken = req.query.device_token
 		let country_id = req.query.country_id
 
-		let result = "TODO"
-		res.send(result)
+		let user = await this.userService.getByField('deviceToken', deviceToken)
+		let active = user.subscribedCountries.indexOf(country_id) >= 0
+		res.json({active: active})
+
 	}
 
 	public async subscribe(req: Request, res: Response,) {
-		let device_token = req.query.device_token
+		let deviceToken = req.query.device_token
 		let country_id = req.query.country_id
 
-		let result = "TODO"
-		res.send(result)
+		let user = await this.userService.firstOrNew(deviceToken)
+		await this.userService.addCountry(user, country_id)
+		res.send(true)
 	}
 
 	public async unsubscribe(req: Request, res: Response,) {
-		let device_token = req.query.device_token
+		let deviceToken = req.query.device_token
 		let country_id = req.query.country_id
 
-		let result = "TODO"
-		res.send(result)
+		let user = await this.userService.getByField('deviceToken', deviceToken)
+		await this.userService.removeCountry(user, country_id)
+		res.send(true)
 	}
 }
