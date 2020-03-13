@@ -2,6 +2,7 @@ import {Document} from "mongoose"
 
 import BaseDataHandler from "../DataHandlers/BaseDataHandler"
 import BaseRepository from "../Repositories/BaseRepository"
+import {PaginatorInterface} from "../../utils/paginator"
 
 export default abstract class BaseService<T extends Document> {
 
@@ -13,8 +14,8 @@ export default abstract class BaseService<T extends Document> {
 		this.dataHandler = dataHandler
 	}
 
-	public async all(): Promise<Array<T>> {
-		return this.repository.all()
+	public async all(filters?: Object, projection?: Object, paginator?: PaginatorInterface, order?: Object): Promise<Array<T>> {
+		return this.repository.all(filters, projection, paginator, order)
 	}
 
 	public async get(id: string, projection?: Object): Promise<T> {

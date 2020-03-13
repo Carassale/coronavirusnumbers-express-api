@@ -1,8 +1,8 @@
 const DEFAULT_PER_PAGE = 10
 
 export interface PaginatorInterface {
-	start: number
-	length: number
+	page: number
+	perPage: number
 	recordsTotal: number | undefined
 	recordsFiltered: number | undefined
 
@@ -17,22 +17,22 @@ export interface PaginatorInterface {
 
 export class Paginator implements PaginatorInterface {
 
-	start: number
-	length: number
+	page: number
+	perPage: number
 	recordsTotal: number | undefined
 	recordsFiltered: number | undefined
 
-	constructor(start: number = 0, length: number = DEFAULT_PER_PAGE) {
-		this.start = start
-		this.length = length
+	constructor(page: number = 0, perPage: number = DEFAULT_PER_PAGE) {
+		this.page = page
+		this.perPage = perPage
 	}
 
 	skip(): number {
-		return this.start
+		return this.page * this.perPage
 	}
 
 	limit(): number {
-		return this.length
+		return this.perPage
 	}
 
 	setRecordsTotal(n: number): void {
