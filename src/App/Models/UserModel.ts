@@ -2,6 +2,7 @@ import * as mongoose from "mongoose"
 
 interface User extends mongoose.Document {
 	deviceToken: string
+	endpoint: string
 	subscribedCountries: string[]
 }
 
