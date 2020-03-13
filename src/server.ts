@@ -1,5 +1,6 @@
 import express, {NextFunction, Request, Response} from "express"
 import compression from "compression"
+import {EventEmitter} from "events"
 import helmet from "helmet"
 
 import * as Socket from "./App/Helpers/SocketHelper"
@@ -7,6 +8,7 @@ import WebRoutes from "./routes/WebRoutes"
 import AppConfig from "./config/AppConfig"
 import ApiRouter from "./routes/ApiRouter"
 import agenda from "./App/Jobs/AgendaJS"
+import Listeners from "./App/Listeners"
 import * as Mongo from "./utils/mongo"
 import {logger} from "./utils/logger"
 
@@ -20,6 +22,9 @@ if (AppConfig.useApm) {
 }
 
 Mongo.initialize().catch(logger.error)
+
+export const eventEmitter = new EventEmitter()
+Listeners(eventEmitter)
 
 export const app: express.Application = express()
 app.use(compression())

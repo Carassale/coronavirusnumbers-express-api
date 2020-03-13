@@ -1,6 +1,7 @@
 import CountryDataHandler from "../DataHandlers/CountryDataHandler"
 import CountryRepository from "../Repositories/CountryRepository"
 import {Country} from "../Models/CountryModel"
+import {eventEmitter} from "../../server"
 import BaseService from "./BaseService"
 
 export default class CountryService extends BaseService<Country> {
@@ -20,7 +21,9 @@ export default class CountryService extends BaseService<Country> {
 			return this.repository.create(country)
 		}
 		if (oldCountry.updatedAt < country.updatedAt) {
-			return this.repository.update(oldCountry.id, country)
+			let updatedCountry = await this.repository.update(oldCountry.id, country)
+			eventEmitter.emit('country_update', {country: updatedCountry})
+			return updatedCountry
 		}
 		return oldCountry
 	}

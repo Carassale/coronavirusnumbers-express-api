@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose"
 
 interface Country extends mongoose.Document {
-	id?: string
+	id: string
 	originalId: number
 
 	name: string
