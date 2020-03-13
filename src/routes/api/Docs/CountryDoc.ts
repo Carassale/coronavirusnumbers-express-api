@@ -13,7 +13,6 @@
  * @apiSuccess {Object[]} countries Countries list.
  * @apiSuccess {String} countries.id Country id.
  * @apiSuccess {String} countries.name Country name.
- * @apiSuccess {String} countries.province Country province.
  * @apiSuccess {Date} countries.updatedAt Country last update.
  * @apiSuccess {Number} countries.latitude Country geo latitude.
  * @apiSuccess {Number} countries.longitude Country geo longitude.
@@ -38,7 +37,6 @@
  *
  * @apiSuccess {String} id Country id.
  * @apiSuccess {String} name Country name.
- * @apiSuccess {String} province Country province.
  * @apiSuccess {Date} updatedAt Country last update.
  * @apiSuccess {Number} latitude Country geo latitude.
  * @apiSuccess {Number} longitude Country geo longitude.
