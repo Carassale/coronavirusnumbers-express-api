@@ -1,7 +1,7 @@
 import {Document} from "mongoose"
 
-import BaseRepository from "../Repositories/BaseRepository"
 import BaseDataHandler from "../DataHandlers/BaseDataHandler"
+import BaseRepository from "../Repositories/BaseRepository"
 
 export default abstract class BaseService<T extends Document> {
 
@@ -17,7 +17,11 @@ export default abstract class BaseService<T extends Document> {
 		return this.repository.all()
 	}
 
-	public async get(id: string): Promise<T> {
-		return this.repository.findOrFail(id)
+	public async get(id: string, projection?: Object): Promise<T> {
+		return this.repository.findOrFail(id, projection)
+	}
+
+	public async getByField(field: string, value: any, projection?: Object): Promise<T> {
+		return this.repository.findBy(field, value, projection)
 	}
 }

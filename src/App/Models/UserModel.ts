@@ -8,6 +8,7 @@ interface User extends mongoose.Document {
 
 const UserSchema = new mongoose.Schema({
 	deviceToken: String,
+	endpoint: String,
 	subscribedCountries: [String]
 }, {
 	timestamps: true

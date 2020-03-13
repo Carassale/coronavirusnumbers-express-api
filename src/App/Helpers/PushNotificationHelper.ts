@@ -64,10 +64,10 @@ export default class PushNotificationRepository {
 		})
 	}
 
-	public async addDeviceToken(user: User): Promise<string> {
+	public async addDeviceToken(deviceToken: string): Promise<string> {
 		let params = {
 			PlatformApplicationArn: SnsConfig.platformApplicationArn,
-			Token: user.deviceToken
+			Token: deviceToken
 		}
 
 		let endpointArn = ""

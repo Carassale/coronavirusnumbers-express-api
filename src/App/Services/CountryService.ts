@@ -7,9 +7,9 @@ import BaseService from "./BaseService"
 export default class CountryService extends BaseService<Country> {
 
 	// @ts-ignore
-	repository: CountryRepository
+	protected repository: CountryRepository
 	// @ts-ignore
-	dataHandler: CountryDataHandler
+	protected dataHandler: CountryDataHandler
 
 	constructor() {
 		super(new CountryRepository(), new CountryDataHandler())
