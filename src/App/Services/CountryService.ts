@@ -20,7 +20,11 @@ export default class CountryService extends BaseService<Country> {
 		if (!oldCountry) {
 			return this.repository.create(country)
 		}
-		if (oldCountry.updatedAt < country.updatedAt) {
+		if (
+			oldCountry.confirmed < country.confirmed ||
+			oldCountry.recovered < country.recovered ||
+			oldCountry.deaths < country.deaths
+		) {
 			let updatedCountry = await this.repository.update(oldCountry.id, country)
 			eventEmitter.emit('country_update', {country: updatedCountry})
 			return updatedCountry

@@ -1,5 +1,3 @@
-import moment from "moment"
-
 import {Country} from "../Models/CountryModel"
 
 export default class ArcgisDataHandler {
@@ -16,7 +14,6 @@ export default class ArcgisDataHandler {
 			confirmed: element.Confirmed as number,
 			recovered: element.Deaths as number,
 			deaths: element.Recovered as number,
-			updatedAt: moment(element.Last_Update).toDate()
 		}
 		return country as Country
 	}
