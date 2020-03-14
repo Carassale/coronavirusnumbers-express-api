@@ -31,7 +31,10 @@ export default class CountryApiController {
 			[order_by]: order_direction == "desc" ? -1 : 1
 		})
 		res.send({
-			countries: countries,
+			countries: countries.map((c: any) => {
+				c.updatedAt = c.updatedAt.getTime()
+				return c
+			}),
 			paginator: {
 				page: paginator.page,
 				per_page: paginator.perPage,
