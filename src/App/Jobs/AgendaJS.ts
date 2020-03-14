@@ -13,5 +13,4 @@ agenda.define('update-country-data',
 	new UpdateCountryDataJob().handler, // reference to the handler, but not executing it!
 )
 
-
 export default agenda
