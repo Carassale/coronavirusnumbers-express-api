@@ -16,7 +16,7 @@ export default class CountryService extends BaseService<Country> {
 	}
 
 	public async createOrUpdate(country: Country): Promise<Country> {
-		let oldCountry = await this.repository.findByOrNull('originalId', country.originalId)
+		let oldCountry = await this.repository.findByOrNull('name', country.name)
 		if (!oldCountry) {
 			return this.repository.create(country)
 		}
