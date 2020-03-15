@@ -26,6 +26,7 @@ export default class CountryApiController {
 			confirmed: 1,
 			recovered: 1,
 			deaths: 1,
+			active: 1,
 			updatedAt: 1
 		}, paginator, {
 			[order_by]: order_direction == "desc" ? -1 : 1

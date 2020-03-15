@@ -12,8 +12,9 @@ export default class ArcgisDataHandler {
 			latitude: element.Lat as number,
 			longitude: element.Long_ as number,
 			confirmed: element.Confirmed as number,
-			recovered: element.Deaths as number,
-			deaths: element.Recovered as number,
+			recovered: element.Recovered as number,
+			deaths: element.Deaths as number,
+			active: element.Active as number,
 		}
 		return country as Country
 	}

@@ -7,7 +7,7 @@
  *
  * @apiParam (Query params) {Number{0..}} [page=0] Page to show.
  * @apiParam (Query params) {Number{0..}} [per_page=20] Element per page to show.
- * @apiParam (Query params) {String="name","confirmed","recovered","deaths","updatedAt"} [order_by=name] Order by value.
+ * @apiParam (Query params) {String="name","confirmed","recovered","deaths","active","updatedAt"} [order_by=name] Order by value.
  * @apiParam (Query params) {String="asc","desc"} [order_direction=asc] Order direction.
  *
  * @apiSuccess {Object[]} countries Countries list.
@@ -19,6 +19,7 @@
  * @apiSuccess {Number} countries.confirmed Confirmed patients.
  * @apiSuccess {Number} countries.recovered Recovered patients.
  * @apiSuccess {Number} countries.deaths Deaths.
+ * @apiSuccess {Number} countries.active Active.
  *
  * @apiSuccess {Object} paginator Paginator object.
  * @apiSuccess {Number} paginator.page Indicates the current page.
@@ -43,4 +44,5 @@
  * @apiSuccess {Number} confirmed Confirmed patients.
  * @apiSuccess {Number} recovered Recovered patients.
  * @apiSuccess {Number} deaths Deaths.
+ * @apiSuccess {Number} active Active.
  */
