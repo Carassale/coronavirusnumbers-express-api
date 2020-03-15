@@ -2,6 +2,7 @@ import axios from "axios"
 
 import ArcgisDataHandler from "../DataHandlers/ArcgisDataHandler"
 import CountryService from "../Services/CountryService"
+import {logger} from "../../utils/logger"
 
 export default class ArcgisHelper {
 
@@ -32,7 +33,13 @@ export default class ArcgisHelper {
 			// 		cacheHint: "true"
 			// 	}
 			// })
+			logger.info("Calling external api", {module: "Arcgis", service: "UpdateCountryData"})
 			if (response.data) {
+				logger.info("Response from external api", {
+					module: "Arcgis",
+					service: "UpdateCountryData",
+					data: response.data
+				})
 				response.data.features.forEach((element: any) => {
 					let country = this.dataHandler.mapCountry(element.attributes)
 					this.countryService.createOrUpdate(country)
