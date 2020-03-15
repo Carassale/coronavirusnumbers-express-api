@@ -29,7 +29,8 @@ export default class CountryService extends BaseService<Country> {
 		if (
 			oldCountry.confirmed < country.confirmed ||
 			oldCountry.recovered < country.recovered ||
-			oldCountry.deaths < country.deaths
+			oldCountry.deaths < country.deaths ||
+			oldCountry.active < country.active
 		) {
 			logger.info("The country needs to be updated", {
 				module: "Country",

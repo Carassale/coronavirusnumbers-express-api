@@ -13,7 +13,7 @@ CountryApiRouter.get(
 		query("page").optional().isNumeric(),
 		query("per_page").optional().isNumeric(),
 		query("order_by").optional().isString().isIn([
-			"name", "confirmed", "recovered", "deaths", "updatedAt"
+			"name", "confirmed", "recovered", "deaths", "active", "updatedAt"
 		]),
 		query("order_direction").optional().isString().isIn([
 			"asc", "desc"

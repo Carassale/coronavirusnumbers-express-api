@@ -12,6 +12,7 @@ interface Country extends mongoose.Document {
 	confirmed: number
 	recovered: number
 	deaths: number
+	active: number
 
 	updatedAt: Date
 	createdAt: Date
@@ -26,6 +27,7 @@ const CountrySchema = new mongoose.Schema({
 	confirmed: Number,
 	recovered: Number,
 	deaths: Number,
+	active: Number,
 	updatedAt: Date,
 	createdAt: Date
 }, {

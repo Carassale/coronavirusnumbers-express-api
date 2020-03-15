@@ -24,7 +24,7 @@ export default class UserService extends BaseService<User> {
 		let body = "Some value has increased!"
 
 		let users = await this.repository.all({
-			subscribedCountries: country.id
+			subscribedCountries: country._id
 		})
 		users.forEach(user => {
 			this.pushNotificationHelper.pushNotification(user, title, body)
@@ -43,7 +43,7 @@ export default class UserService extends BaseService<User> {
 		if (user.subscribedCountries.indexOf(countryId) < 0) {
 			let countries = user.subscribedCountries
 			countries.push(countryId)
-			await this.repository.update(user.id, {
+			await this.repository.update(user._id, {
 				subscribedCountries: countries
 			})
 		}
@@ -54,7 +54,7 @@ export default class UserService extends BaseService<User> {
 			let countries = user.subscribedCountries.filter(country => {
 				return country != countryId
 			})
-			await this.repository.update(user.id, {
+			await this.repository.update(user._id, {
 				subscribedCountries: countries
 			})
 		}
