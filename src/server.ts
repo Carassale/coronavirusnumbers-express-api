@@ -14,6 +14,7 @@ import {logger} from "./utils/logger"
 
 const {engine} = require('express-edge')
 const session = require("express-session")
+const cors = require('cors')
 
 if (AppConfig.useApm) {
 	require('elastic-apm-node').start({
@@ -29,6 +30,7 @@ Listeners(eventEmitter)
 export const app: express.Application = express()
 app.use(compression())
 app.use(helmet())
+app.use(cors())
 
 app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: true}))
 app.use(session({secret: 'CHANGE-IT', resave: false, saveUninitialized: true, cookie: {}}))
