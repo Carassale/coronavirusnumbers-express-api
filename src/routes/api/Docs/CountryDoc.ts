@@ -11,7 +11,7 @@
  * @apiParam (Query params) {String="asc","desc"} [order_direction=asc] Order direction.
  *
  * @apiSuccess {Object[]} countries Countries list.
- * @apiSuccess {String} countries.id Country id.
+ * @apiSuccess {String} countries._id Country id.
  * @apiSuccess {String} countries.name Country name.
  * @apiSuccess {Date} countries.updatedAt Country last update.
  * @apiSuccess {Number} countries.latitude Country geo latitude.
@@ -36,7 +36,7 @@
  *
  * @apiParam (Query params) {String} id Country id.
  *
- * @apiSuccess {String} id Country id.
+ * @apiSuccess {String} _id Country id.
  * @apiSuccess {String} name Country name.
  * @apiSuccess {Date} updatedAt Country last update.
  * @apiSuccess {Number} latitude Country geo latitude.
