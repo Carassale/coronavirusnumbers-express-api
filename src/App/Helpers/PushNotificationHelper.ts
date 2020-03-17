@@ -92,10 +92,12 @@ export default class PushNotificationRepository {
 	}
 
 	public async removeDeviceToken(user: User): Promise<void> {
-		let endpointArn = user.endpoint
+		if (!user.endpoint) {
+			return
+		}
 
 		let params: SNS.Types.DeleteEndpointInput = {
-			EndpointArn: endpointArn
+			EndpointArn: user.endpoint
 		}
 
 		await this.sns.deleteEndpoint(
@@ -105,7 +107,7 @@ export default class PushNotificationRepository {
 				type: 'connector',
 				module: 'PushNotification',
 				service: 'SNSDeleteEndpoint',
-				endpointArn: endpointArn
+				endpointArn: user.endpoint
 			})
 		}).catch((err: AWS.AWSError) => {
 			throw new ResponseError(err.statusCode, err.message)

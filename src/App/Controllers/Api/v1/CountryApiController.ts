@@ -1,14 +1,18 @@
 import {Request, Response} from "express"
 
+import CountryDataHandler from "../../../DataHandlers/CountryDataHandler"
 import CountryService from "../../../Services/CountryService"
 import {Paginator} from "../../../../utils/paginator"
+import {Country} from "../../../Models/CountryModel"
 
 export default class CountryApiController {
 
 	private countryService: CountryService
+	private countryDataHandler: CountryDataHandler
 
 	constructor() {
 		this.countryService = new CountryService()
+		this.countryDataHandler = new CountryDataHandler()
 	}
 
 	public async index(req: Request, res: Response,) {
@@ -18,23 +22,12 @@ export default class CountryApiController {
 		let order_direction = req.query.order_direction ? req.query.order_direction : "asc"
 
 		let paginator: Paginator = new Paginator(page, per_page)
-		let countries = await this.countryService.all({}, {
-			_id: 1,
-			name: 1,
-			latitude: 1,
-			longitude: 1,
-			confirmed: 1,
-			recovered: 1,
-			deaths: 1,
-			active: 1,
-			updatedAt: 1
-		}, paginator, {
+		let countries = await this.countryService.all(undefined, undefined, paginator, {
 			[order_by]: order_direction == "desc" ? -1 : 1
 		})
-		res.send({
-			countries: countries.map((c: any) => {
-				c.updatedAt = c.updatedAt.getTime()
-				return c
+		res.json({
+			countries: countries.map((country: Country) => {
+				return this.countryDataHandler.mapToShow(country)
 			}),
 			paginator: {
 				page: paginator.page,
@@ -45,9 +38,9 @@ export default class CountryApiController {
 	}
 
 	public async show(req: Request, res: Response,) {
-		let id = req.query.id
+		let id = req.params.id
 
-		let result = await this.countryService.get(id)
-		res.send(result)
+		let country = await this.countryService.get(id)
+		res.json(this.countryDataHandler.mapToShow(country))
 	}
 }

@@ -11,8 +11,8 @@ export default class UserApiController {
 	}
 
 	public async status(req: Request, res: Response,) {
-		let deviceToken = req.query.device_token
-		let country_id = req.query.country_id
+		let deviceToken = req.params.device_token
+		let country_id = req.params.country_id
 
 		let user = await this.userService.getByField('deviceToken', deviceToken)
 		let active = user.subscribedCountries.indexOf(country_id) >= 0
@@ -21,8 +21,8 @@ export default class UserApiController {
 	}
 
 	public async subscribe(req: Request, res: Response,) {
-		let deviceToken = req.query.device_token
-		let country_id = req.query.country_id
+		let deviceToken = req.params.device_token
+		let country_id = req.params.country_id
 
 		let user = await this.userService.firstOrNew(deviceToken)
 		await this.userService.addCountry(user, country_id)
@@ -30,8 +30,8 @@ export default class UserApiController {
 	}
 
 	public async unsubscribe(req: Request, res: Response,) {
-		let deviceToken = req.query.device_token
-		let country_id = req.query.country_id
+		let deviceToken = req.params.device_token
+		let country_id = req.params.country_id
 
 		let user = await this.userService.getByField('deviceToken', deviceToken)
 		await this.userService.removeCountry(user, country_id)
