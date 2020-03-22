@@ -30,7 +30,9 @@ Listeners(eventEmitter)
 export const app: express.Application = express()
 app.use(compression())
 app.use(helmet())
-app.use(cors())
+app.use(cors({
+	credentials: false,
+  }))
 
 app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: true}))
 app.use(session({secret: 'CHANGE-IT', resave: false, saveUninitialized: true, cookie: {}}))
