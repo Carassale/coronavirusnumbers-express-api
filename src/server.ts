@@ -13,7 +13,6 @@ import * as Mongo from "./utils/mongo"
 import {logger} from "./utils/logger"
 
 const {engine} = require('express-edge')
-const session = require("express-session")
 const cors = require('cors')
 
 if (AppConfig.useApm) {
@@ -33,9 +32,6 @@ app.use(helmet())
 app.use(cors({
 	credentials: false,
   }))
-
-app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: true}))
-app.use(session({secret: 'CHANGE-IT', resave: false, saveUninitialized: true, cookie: {}}))
 
 app.use(engine)
 app.set('views', `./build/resources/views`)
