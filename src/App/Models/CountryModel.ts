@@ -1,39 +1,39 @@
-import * as mongoose from "mongoose"
+import * as mongoose from 'mongoose';
 
 interface Country extends mongoose.Document {
-	id: string
-	originalId: number
+  id: string
+  originalId: number
 
-	name: string
+  name: string
 
-	latitude: number
-	longitude: number
+  latitude: number
+  longitude: number
 
-	confirmed: number
-	recovered: number
-	deaths: number
-	active: number
+  confirmed: number
+  recovered: number
+  deaths: number
+  active: number
 
-	updatedAt: Date
-	createdAt: Date
+  updatedAt: Date
+  createdAt: Date
 }
 
 const CountrySchema = new mongoose.Schema({
-	id: String,
-	originalId: Number,
-	name: String,
-	latitude: Number,
-	longitude: Number,
-	confirmed: Number,
-	recovered: Number,
-	deaths: Number,
-	active: Number,
-	updatedAt: Date,
-	createdAt: Date
+  id: String,
+  originalId: Number,
+  name: String,
+  latitude: Number,
+  longitude: Number,
+  confirmed: Number,
+  recovered: Number,
+  deaths: Number,
+  active: Number,
+  updatedAt: Date,
+  createdAt: Date,
 }, {
-	timestamps: true
-})
+  timestamps: true,
+});
 
-const CountryModel = mongoose.model<Country>("Country", CountrySchema)
+const CountryModel = mongoose.model<Country>('Country', CountrySchema);
 
-export {Country, CountryModel, CountrySchema}
+export { Country, CountryModel };

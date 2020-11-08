@@ -1,8 +1,8 @@
-import {NextFunction, Request, Response} from "express"
-import {validationResult} from "express-validator"
+import { NextFunction, Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
-import {ResponseError} from "../../utils/errors"
-import {logger} from "../../utils/logger"
+import { ResponseError } from '../../utils/errors';
+import Logger from '../../utils/logger';
 
 /**
  * Middleware ParamsValidation.
@@ -17,26 +17,26 @@ import {logger} from "../../utils/logger"
  * @constructor
  */
 const ParamsValidation = async (req: Request, res: Response, next: NextFunction, view?: string) => {
-	logger.info("Validating params", {
-		type: 'Middleware',
-		module: 'ParamsValidation',
-		service: 'ParamsValidation'
-	})
-	const errors = validationResult(req)
-	if (errors.isEmpty()) {
-		return next()
-	}
+  Logger.info('Validating params', {
+    type: 'Middleware',
+    module: 'ParamsValidation',
+    service: 'ParamsValidation',
+  });
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    return next();
+  }
 
-	let arrayError: Array<any> = errors.array({onlyFirstError: true})
-	let metaError: Array<any> = new Array<any>()
-	for (let error of arrayError) {
-		metaError[error.param] = {
-			message: error.msg,
-			old: error.value
-		}
-	}
-	let error = new ResponseError(422, "Validation failed", [{errors: metaError}])
-	next(error)
-}
+  const arrayError: Array<any> = errors.array({onlyFirstError: true});
+  const metaError: Array<any> = new Array<any>();
+  for (const error of arrayError) {
+    metaError[error.param] = {
+      message: error.msg,
+      old: error.value,
+    };
+  }
+  const error = new ResponseError(422, 'Validation failed', [{errors: metaError}]);
+  next(error);
+};
 
-export default ParamsValidation
+export default ParamsValidation;
