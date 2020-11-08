@@ -1,29 +1,29 @@
-import {NextFunction, Request, Response, Router} from "express"
-import * as bodyParser from "body-parser"
+import {
+  NextFunction, Request, Response, Router,
+} from 'express';
+import * as bodyParser from 'body-parser';
 
-import {ResponseError, writeError} from "../utils/errors"
-import CountryApiRouter from "./api/CountryApiRoutes"
-import UserApiRouter from "./api/UserApiRoutes"
-import {expressLogger} from "../utils/logger"
+import { ResponseError, writeError } from '../utils/errors';
+import CountryApiRouter from './api/CountryApiRoutes';
+import { expressLogger } from '../utils/logger';
 
-const jsonParser = bodyParser.json({limit: '50mb'})
+const jsonParser = bodyParser.json({limit: '50mb'});
 
-const ApiRouter = Router({mergeParams: true})
+const ApiRouter = Router({mergeParams: true});
 
-ApiRouter.use(jsonParser)
-ApiRouter.use(expressLogger)
-ApiRouter.use(bodyParser.urlencoded({extended: false}))
+ApiRouter.use(jsonParser);
+ApiRouter.use(expressLogger);
+ApiRouter.use(bodyParser.urlencoded({extended: false}));
 
-ApiRouter.use('/v1/user', UserApiRouter)
-ApiRouter.use('/v1/country', CountryApiRouter)
+ApiRouter.use('/v1/country', CountryApiRouter);
 
 ApiRouter.get('*', (req: Request, res: Response, next: NextFunction) => {
-	let error = new ResponseError(404, 'Api Not Found')
-	next(error)
-})
+  const error = new ResponseError(404, 'Api Not Found');
+  next(error);
+});
 
 ApiRouter.use((error: any, req: Request, res: Response, _next: NextFunction) => {
-	writeError(error, res)
-})
+  writeError(error, res);
+});
 
-export default ApiRouter
+export default ApiRouter;

@@ -1,31 +1,33 @@
-import {NextFunction, Request, Response, Router} from "express"
-import {query} from "express-validator"
+import {
+  NextFunction, Request, Response, Router,
+} from 'express';
+import { query } from 'express-validator';
 
-import CountryApiController from "../../App/Controllers/Api/v1/CountryApiController"
-import ParamsValidation from "../../App/Middleware/ParamsValidation"
+import CountryApiController from '../../App/Controllers/Api/v1/CountryApiController';
+import ParamsValidation from '../../App/Middleware/ParamsValidation';
 
-const CountryApiRouter = Router({mergeParams: true})
-const controller = new CountryApiController()
-
-CountryApiRouter.get(
-	"/",
-	[
-		query("page").optional().isNumeric(),
-		query("per_page").optional().isNumeric(),
-		query("order_by").optional().isString().isIn([
-			"name", "confirmed", "recovered", "deaths", "active", "updatedAt"
-		]),
-		query("order_direction").optional().isString().isIn([
-			"asc", "desc"
-		])
-	],
-	(req: Request, res: Response, next: NextFunction) => ParamsValidation(req, res, next, 'auth/reset-ask'),
-	(req: Request, res: Response, next: NextFunction) => controller.index(req, res).catch(next)
-)
+const CountryApiRouter = Router({mergeParams: true});
+const controller = new CountryApiController();
 
 CountryApiRouter.get(
-	"/:id",
-	(req: Request, res: Response, next: NextFunction) => controller.show(req, res).catch(next)
-)
+  '/',
+  [
+    query('page').optional().isNumeric(),
+    query('per_page').optional().isNumeric(),
+    query('order_by').optional().isString().isIn([
+      'name', 'confirmed', 'recovered', 'deaths', 'active', 'updatedAt',
+    ]),
+    query('order_direction').optional().isString().isIn([
+      'asc', 'desc',
+    ]),
+  ],
+  (req: Request, res: Response, next: NextFunction) => ParamsValidation(req, res, next, 'auth/reset-ask'),
+  (req: Request, res: Response, next: NextFunction) => controller.index(req, res).catch(next),
+);
 
-export default CountryApiRouter
+CountryApiRouter.get(
+  '/:id',
+  (req: Request, res: Response, next: NextFunction) => controller.show(req, res).catch(next),
+);
+
+export default CountryApiRouter;

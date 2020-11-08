@@ -1,59 +1,53 @@
-import {MongoError} from "mongodb"
+import AppConfig from '../config/AppConfig';
+import Logger from './logger';
 
-import AppConfig from "../config/AppConfig"
-import {logger} from "./logger"
+const mongoose = require('mongoose');
 
-const mongoose = require("mongoose")
+const MongoInitializer = async () => {
+  const {mongoUri} = AppConfig;
 
-let _kill = (err: any) => {
-	logger.error(err)
-	logger.error("MongoDB connection error. Please make sure MongoDB is running.", {
-		type: 'services', module: 'Mongo', service: 'Connection'
-	})
-	process.exit()
-}
+  const mongoOptions = {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    autoReconnect: true,
+    reconnectTries: 5,
+    reconnectInterval: 500,
+    connectTimeoutMS: 2000,
+    useCreateIndex: true,
+  };
 
-let _successfulConnected = () => {
-	logger.info("Connected to mongodb", {
-		type: 'services', module: 'Mongo', service: 'Connection'
-	})
-	_seed().catch(logger.error)
-}
+  const logOptions = {
+    type: 'services',
+    module: 'Mongo',
+    service: 'Initialize',
+    mongoUri,
+    mongoOptions,
+  };
 
-let _seed = async () => {
-}
+  const db = mongoose.connection;
 
-let initialize = async () => {
-	const serverMongoUri = AppConfig.mongoUri
+  db.on('connecting', () => {
+    Logger.info('Connecting to mongo', logOptions);
+  });
+  db.on('error', (error: any) => {
+    Logger.error(`Error in MongoDb connection: ${error}`, logOptions);
+    mongoose.disconnect();
+  });
+  db.on('connected', () => {
+    Logger.info('MongoDB connected!', logOptions);
+  });
+  db.once('open', () => {
+    Logger.info('MongoDB connection opened!', logOptions);
+  });
+  db.on('reconnected', () => {
+    Logger.info('MongoDB reconnected!', logOptions);
+  });
+  db.on('disconnected', () => {
+    Logger.info('MongoDB disconnected!', logOptions);
+    mongoose.connect(mongoUri, mongoOptions);
+  });
 
-	logger.info(`Connecting to mongo`, {
-		type: 'services', module: 'Mongo', service: 'Initialize', uri: serverMongoUri
-	})
+  mongoose.connect(mongoUri, mongoOptions).catch((e: any) => Logger.error(e, logOptions));
+};
 
-	await mongoose.connect(serverMongoUri, {
-		useNewUrlParser: true,
-		useFindAndModify: false,
-		autoReconnect: true,
-		reconnectTries: 5,
-		reconnectInterval: 500,
-		connectTimeoutMS: 2000
-	}, (err: MongoError) => {
-		if (err) {
-			_kill(err)
-		}
-		_successfulConnected()
-	})
-
-	mongoose.connection.on("connected", (err: Error) => {
-		if (err) {
-			_kill(err)
-		}
-		_successfulConnected()
-	})
-
-	mongoose.connection.on("error", (err: Error) => {
-		_kill(err)
-	})
-}
-
-export {initialize}
+export default MongoInitializer;
