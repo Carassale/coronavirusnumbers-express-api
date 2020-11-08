@@ -1,9 +1,8 @@
 import { ConsoleTransportInstance, FileTransportInstance } from 'winston/lib/winston/transports';
 import * as Transport from 'winston-transport';
 
-import AppConfig, { AppEnvironmentEnum } from '../config/AppConfig';
+import AppConfig  from '../config/AppConfig';
 
-const ElasticSearch = require('winston-elasticsearch');
 const expressWinston = require('express-winston');
 const winston = require('winston');
 
@@ -31,40 +30,14 @@ const _formatter = winston.format((info: any, _opts: any) => {
 });
 
 const _transports = (): Transport[] => {
-  const transports: Transport[] = [
+  return [
     _consoleTransport(),
+    _fileTransport()
   ];
-  if (AppConfig.environment == AppEnvironmentEnum.LOCAL) {
-    transports.push(_logStashTransport());
-  } else {
-    transports.push(_fileTransport());
-  }
-  return transports;
-};
-
-let _logStashTransport = () => {
-  const { Client } = require('@elastic/elasticsearch');
-  const client = new Client({
-    node: process.env.ELASTICSEARCH_NODE,
-  });
-
-  return new ElasticSearch({
-    client,
-    indexPrefix: 'gucci_runner_booster_local',
-  });
 };
 
 let _consoleTransport = (): ConsoleTransportInstance => {
-  let options;
-  if (AppConfig.environment == AppEnvironmentEnum.LOCAL) {
-    options = {
-      format: winston.format.combine(
-        winston.format.cli(),
-        winston.format.splat(),
-      ),
-    };
-  }
-  return new winston.transports.Console(options);
+  return new winston.transports.Console();
 };
 
 let _fileTransport = (): FileTransportInstance => new winston.transports.File({
@@ -77,7 +50,7 @@ const Logger = winston.createLogger({
   levels: winston.config.npm.levels,
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.errors({ stack: true }),
+    winston.format.errors({stack: true}),
     winston.format.splat(),
     _formatter(),
     winston.format.json(),

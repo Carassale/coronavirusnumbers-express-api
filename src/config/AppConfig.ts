@@ -1,31 +1,15 @@
 import * as dotenv from 'dotenv';
 
-import BaseConfig from './BaseConfig';
-
 dotenv.config();
-
-export enum AppEnvironmentEnum {
-  LOCAL = 'local',
-  TEST = 'test',
-  DEV = 'development',
-  STAG = 'staging',
-  PROD = 'production'
-}
 
 const AppConfig = {
 
-  get environment(): AppEnvironmentEnum {
-    return process.env.NODE_ENV as AppEnvironmentEnum;
-  },
-
-  get isDebugActive(): boolean {
-    const active = process.env.DEBUG_ACTIVE == 'true';
-    return BaseConfig.logAndReturn(active);
+  get environment(): string {
+    return process.env.NODE_ENV as string;
   },
 
   get port(): string {
-    const port = process.env.PORT as string;
-    return BaseConfig.logAndReturn(port);
+    return process.env.PORT as string;
   },
 
   get mongoUri(): string {
@@ -51,15 +35,7 @@ const AppConfig = {
       host = 'localhost';
     }
 
-    const uri = `mongodb://${host}:${mongoPort}/${mongoDB}?${option}`;
-    return BaseConfig.logAndReturn(uri);
-  },
-
-  get baseUrl(): string {
-    const base_url = process.env.BASE_URL as string;
-    const port = process.env.PORT as string;
-
-    return BaseConfig.logAndReturn(`${base_url}:${port}`);
+    return `mongodb://${host}:${mongoPort}/${mongoDB}?${option}`;
   },
 
   get logLevel(): string {
@@ -68,11 +44,6 @@ const AppConfig = {
       logLevel = process.env.LOG_LEVEL as string;
     }
     return logLevel;
-  },
-
-  get useApm(): boolean {
-    const useApm = process.env.ELASTICSEARCH_USE_APM == 'true';
-    return BaseConfig.logAndReturn(useApm);
   },
 };
 

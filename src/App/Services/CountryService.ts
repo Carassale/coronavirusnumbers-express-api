@@ -1,7 +1,6 @@
 import CountryDataHandler from '../DataHandlers/CountryDataHandler';
 import CountryRepository from '../Repositories/CountryRepository';
 import { Country } from '../Models/CountryModel';
-import { eventEmitter } from '../../server';
 import BaseService from './BaseService';
 import Logger from '../../utils/logger';
 
@@ -38,9 +37,7 @@ export default class CountryService extends BaseService<Country> {
         country,
         oldCountry,
       });
-      const updatedCountry = await this.repository.update(oldCountry._id, country);
-      eventEmitter.emit('country_update', {country: updatedCountry});
-      return updatedCountry;
+      return this.repository.update(oldCountry._id, country);
     }
     Logger.info('No change to the country', {
       module: 'Country',

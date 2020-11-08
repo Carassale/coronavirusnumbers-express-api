@@ -5,7 +5,6 @@ import * as bodyParser from 'body-parser';
 
 import { ResponseError, writeError } from '../utils/errors';
 import CountryApiRouter from './api/CountryApiRoutes';
-import UserApiRouter from './api/UserApiRoutes';
 import { expressLogger } from '../utils/logger';
 
 const jsonParser = bodyParser.json({limit: '50mb'});
@@ -16,7 +15,6 @@ ApiRouter.use(jsonParser);
 ApiRouter.use(expressLogger);
 ApiRouter.use(bodyParser.urlencoded({extended: false}));
 
-ApiRouter.use('/v1/user', UserApiRouter);
 ApiRouter.use('/v1/country', CountryApiRouter);
 
 ApiRouter.get('*', (req: Request, res: Response, next: NextFunction) => {
