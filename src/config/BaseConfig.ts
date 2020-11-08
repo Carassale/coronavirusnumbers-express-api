@@ -1,21 +1,21 @@
-import * as dotenv from "dotenv"
+import * as dotenv from 'dotenv';
 
-import {logger} from "../utils/logger"
+import Logger from '../utils/logger';
 
-dotenv.config()
+dotenv.config();
 
 const BaseConfig = {
 
-	logAndReturn(value: any): any {
-		logger.debug("Get variable from env", {
-			module: "config",
-			// service: FileName,
-			// method: MethodName,
-			value: value
-		})
+  logAndReturn(value: any): any {
+    Logger.debug('Get variable from env', {
+      module: 'config',
+      // service: FileName,
+      // method: MethodName,
+      value,
+    });
 
-		return value
-	}
-}
+    return value;
+  },
+};
 
-export default BaseConfig
+export default BaseConfig;

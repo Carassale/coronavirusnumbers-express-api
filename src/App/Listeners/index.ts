@@ -1,8 +1,7 @@
-import {EventEmitter} from "events"
+import { EventEmitter } from 'events';
 
-import CountryListeners from "./CountryListeners"
+import CountryListeners from './CountryListeners';
 
 export default (eventEmitter: EventEmitter) => {
-
-	CountryListeners(eventEmitter)
-}
+  CountryListeners(eventEmitter);
+};

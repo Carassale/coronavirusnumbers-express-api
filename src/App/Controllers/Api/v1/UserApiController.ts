@@ -1,40 +1,38 @@
-import {Request, Response} from "express"
+import { Request, Response } from 'express';
 
-import UserService from "../../../Services/UserService"
+import UserService from '../../../Services/UserService';
 
 export default class UserApiController {
+  private userService: UserService;
 
-	private userService: UserService
+  constructor() {
+    this.userService = new UserService();
+  }
 
-	constructor() {
-		this.userService = new UserService()
-	}
+  public async status(req: Request, res: Response) {
+    const deviceToken = req.params.device_token;
+    const {country_id} = req.params;
 
-	public async status(req: Request, res: Response,) {
-		let deviceToken = req.params.device_token
-		let country_id = req.params.country_id
+    const user = await this.userService.getByField('deviceToken', deviceToken);
+    const active = user.subscribedCountries.indexOf(country_id) >= 0;
+    res.json({active});
+  }
 
-		let user = await this.userService.getByField('deviceToken', deviceToken)
-		let active = user.subscribedCountries.indexOf(country_id) >= 0
-		res.json({active: active})
+  public async subscribe(req: Request, res: Response) {
+    const deviceToken = req.params.device_token;
+    const {country_id} = req.params;
 
-	}
+    const user = await this.userService.firstOrNew(deviceToken);
+    await this.userService.addCountry(user, country_id);
+    res.send(true);
+  }
 
-	public async subscribe(req: Request, res: Response,) {
-		let deviceToken = req.params.device_token
-		let country_id = req.params.country_id
+  public async unsubscribe(req: Request, res: Response) {
+    const deviceToken = req.params.device_token;
+    const {country_id} = req.params;
 
-		let user = await this.userService.firstOrNew(deviceToken)
-		await this.userService.addCountry(user, country_id)
-		res.send(true)
-	}
-
-	public async unsubscribe(req: Request, res: Response,) {
-		let deviceToken = req.params.device_token
-		let country_id = req.params.country_id
-
-		let user = await this.userService.getByField('deviceToken', deviceToken)
-		await this.userService.removeCountry(user, country_id)
-		res.send(true)
-	}
+    const user = await this.userService.getByField('deviceToken', deviceToken);
+    await this.userService.removeCountry(user, country_id);
+    res.send(true);
+  }
 }

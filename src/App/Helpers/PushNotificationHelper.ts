@@ -1,116 +1,115 @@
-import * as SNS from "aws-sdk/clients/sns"
-import * as AWS from "aws-sdk"
+import * as SNS from 'aws-sdk/clients/sns';
+import * as AWS from 'aws-sdk';
 
-import {ResponseError} from "../../utils/errors"
-import SnsConfig from "../../config/SnsConfig"
-import {logger} from "../../utils/logger"
-import {User} from "../Models/UserModel"
+import { ResponseError } from '../../utils/errors';
+import SnsConfig from '../../config/SnsConfig';
+import Logger from '../../utils/logger';
+import { User } from '../Models/UserModel';
 
 export default class PushNotificationRepository {
+  private sns: AWS.SNS;
 
-	private sns: AWS.SNS
+  constructor() {
+    this.sns = new AWS.SNS(SnsConfig.connectionOption);
+  }
 
-	constructor() {
-		this.sns = new AWS.SNS(SnsConfig.connectionOption)
-	}
+  async pushNotification(user: User, title: string, body: string): Promise<void> {
+    Logger.info('Sending push notification', {user, title, body});
 
-	async pushNotification(user: User, title: string, body: string): Promise<void> {
-		logger.info(`Sending push notification`, {user: user, title: title, body: body})
+    if (SnsConfig.blockSNSPush) {
+      Logger.info('Push notification blocked by env', {
+        type: 'connector',
+        module: 'PushNotification',
+        service: 'PushNotification',
+      });
+      return;
+    }
 
-		if (SnsConfig.blockSNSPush) {
-			logger.info(`Push notification blocked by env`, {
-				type: 'connector',
-				module: 'PushNotification',
-				service: 'PushNotification'
-			})
-			return
-		}
+    const params: SNS.Types.PublishInput = {
+      TargetArn: user.endpoint,
+      MessageStructure: 'json',
+      Message: JSON.stringify({
+        default: body,
+        APNS: JSON.stringify({
+          aps: {
+            alert: {
+              title,
+              body,
+            },
+            sound: 'default',
+            badge: 0,
+          },
+        }),
+      }),
+    };
 
-		let params: SNS.Types.PublishInput = {
-			TargetArn: user.endpoint,
-			MessageStructure: "json",
-			Message: JSON.stringify({
-				default: body,
-				APNS: JSON.stringify({
-					aps: {
-						alert: {
-							title: title,
-							body: body
-						},
-						sound: "default",
-						badge: 0
-					}
-				})
-			})
-		}
+    await this.sns.publish(
+      params,
+    ).promise().then((data: SNS.Types.PublishResponse) => {
+      Logger.info('Message pushed', {
+        user,
+        type: 'connector',
+        module: 'PushNotification',
+        service: 'PublishMessage',
+        message_id: data.MessageId,
+      });
+    }).catch((err: AWS.AWSError) => {
+      throw new ResponseError(err.statusCode, err.message, [{
+        user,
+        type: 'connector',
+        module: 'PushNotification',
+        service: 'PublishMessage',
+      }]);
+    });
+  }
 
-		await this.sns.publish(
-			params
-		).promise().then((data: SNS.Types.PublishResponse) => {
-			logger.info(`Message pushed`, {
-				user: user,
-				type: 'connector',
-				module: 'PushNotification',
-				service: 'PublishMessage',
-				message_id: data.MessageId
-			})
-		}).catch((err: AWS.AWSError) => {
-			throw new ResponseError(err.statusCode, err.message, [{
-				user: user,
-				type: 'connector',
-				module: 'PushNotification',
-				service: 'PublishMessage'
-			}])
-		})
-	}
+  public async addDeviceToken(deviceToken: string): Promise<string> {
+    const params = {
+      PlatformApplicationArn: SnsConfig.platformApplicationArn,
+      Token: deviceToken,
+    };
 
-	public async addDeviceToken(deviceToken: string): Promise<string> {
-		let params = {
-			PlatformApplicationArn: SnsConfig.platformApplicationArn,
-			Token: deviceToken
-		}
+    let endpointArn = '';
 
-		let endpointArn = ""
+    await this.sns.createPlatformEndpoint(
+      params,
+    ).promise().then((data: SNS.Types.CreateEndpointResponse) => {
+      if (data.EndpointArn) {
+        Logger.info('Platform endpoint created', {
+          type: 'connector',
+          module: 'PushNotification',
+          service: 'SNSAddEndpoint',
+          endpointArn: data.EndpointArn,
+        });
+        endpointArn = data.EndpointArn;
+      }
+    }).catch((err: AWS.AWSError) => {
+      throw new ResponseError(err.statusCode, err.message);
+    });
 
-		await this.sns.createPlatformEndpoint(
-			params
-		).promise().then((data: SNS.Types.CreateEndpointResponse) => {
-			if (data.EndpointArn) {
-				logger.info(`Platform endpoint created`, {
-					type: 'connector',
-					module: 'PushNotification',
-					service: 'SNSAddEndpoint',
-					endpointArn: data.EndpointArn
-				})
-				endpointArn = data.EndpointArn
-			}
-		}).catch((err: AWS.AWSError) => {
-			throw new ResponseError(err.statusCode, err.message)
-		})
+    return endpointArn;
+  }
 
-		return endpointArn
-	}
+  public async removeDeviceToken(user: User): Promise<void> {
+    if (!user.endpoint) {
+      return;
+    }
 
-	public async removeDeviceToken(user: User): Promise<void> {
-		if (!user.endpoint) {
-			return
-		}
+    const params: SNS.Types.DeleteEndpointInput = {
+      EndpointArn: user.endpoint,
+    };
 
-		let params: SNS.Types.DeleteEndpointInput = {
-			EndpointArn: user.endpoint
-		}
-
-		await this.sns.deleteEndpoint(
-			params
-		).promise().then((_data: {}) => {
-			logger.info(`Platform endpoint removed`, {
-				type: 'connector',
-				module: 'PushNotification',
-				service: 'SNSDeleteEndpoint',
-				endpointArn: user.endpoint
-			})
-		}).catch((err: AWS.AWSError) => {
-			throw new ResponseError(err.statusCode, err.message)
-		})
-	}
+    await this.sns.deleteEndpoint(
+      params,
+    ).promise().then((_data: {}) => {
+      Logger.info('Platform endpoint removed', {
+        type: 'connector',
+        module: 'PushNotification',
+        service: 'SNSDeleteEndpoint',
+        endpointArn: user.endpoint,
+      });
+    }).catch((err: AWS.AWSError) => {
+      throw new ResponseError(err.statusCode, err.message);
+    });
+  }
 }

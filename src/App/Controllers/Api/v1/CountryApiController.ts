@@ -1,46 +1,44 @@
-import {Request, Response} from "express"
+import { Request, Response } from 'express';
 
-import CountryDataHandler from "../../../DataHandlers/CountryDataHandler"
-import CountryService from "../../../Services/CountryService"
-import {Paginator} from "../../../../utils/paginator"
-import {Country} from "../../../Models/CountryModel"
+import CountryDataHandler from '../../../DataHandlers/CountryDataHandler';
+import CountryService from '../../../Services/CountryService';
+import { Country } from '../../../Models/CountryModel';
+import Paginator from '../../../../utils/paginator';
 
 export default class CountryApiController {
+  private countryService: CountryService;
 
-	private countryService: CountryService
-	private countryDataHandler: CountryDataHandler
+  private countryDataHandler: CountryDataHandler;
 
-	constructor() {
-		this.countryService = new CountryService()
-		this.countryDataHandler = new CountryDataHandler()
-	}
+  constructor() {
+    this.countryService = new CountryService();
+    this.countryDataHandler = new CountryDataHandler();
+  }
 
-	public async index(req: Request, res: Response,) {
-		let page = req.query.page ? +req.query.page : 0
-		let per_page = req.query.per_page ? +req.query.per_page : 200
-		let order_by = req.query.order_by ? req.query.order_by : "name"
-		let order_direction = req.query.order_direction ? req.query.order_direction : "asc"
+  public async index(req: Request, res: Response) {
+    const page = req.query.page ? +req.query.page : 0;
+    const per_page = req.query.per_page ? +req.query.per_page : 200;
+    const order_by = req.query.order_by ? req.query.order_by : 'name';
+    const order_direction = req.query.order_direction ? req.query.order_direction : 'asc';
 
-		let paginator: Paginator = new Paginator(page, per_page)
-		let countries = await this.countryService.all(undefined, undefined, paginator, {
-			[order_by]: order_direction == "desc" ? -1 : 1
-		})
-		res.json({
-			countries: countries.map((country: Country) => {
-				return this.countryDataHandler.mapToShow(country)
-			}),
-			paginator: {
-				page: paginator.page,
-				per_page: paginator.perPage,
-				total_elements: paginator.recordsTotal,
-			}
-		})
-	}
+    const paginator: Paginator = new Paginator(page, per_page);
+    const countries = await this.countryService.all(undefined, undefined, paginator, {
+      [order_by]: order_direction == 'desc' ? -1 : 1,
+    });
+    res.json({
+      countries: countries.map((country: Country) => this.countryDataHandler.mapToShow(country)),
+      paginator: {
+        page: paginator.page,
+        per_page: paginator.perPage,
+        total_elements: paginator.recordsTotal,
+      },
+    });
+  }
 
-	public async show(req: Request, res: Response,) {
-		let id = req.params.id
+  public async show(req: Request, res: Response) {
+    const {id} = req.params;
 
-		let country = await this.countryService.get(id)
-		res.json(this.countryDataHandler.mapToShow(country))
-	}
+    const country = await this.countryService.get(id);
+    res.json(this.countryDataHandler.mapToShow(country));
+  }
 }
