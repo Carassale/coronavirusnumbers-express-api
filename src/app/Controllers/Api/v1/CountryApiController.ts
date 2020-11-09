@@ -18,7 +18,7 @@ export default class CountryApiController {
   public async index(req: Request, res: Response) {
     const page = req.query.page ? +req.query.page : 0;
     const per_page = req.query.per_page ? +req.query.per_page : 200;
-    const order_by = req.query.order_by ? req.query.order_by : 'name';
+    const order_by: string = req.query.order_by ? req.query.order_by as string : 'name';
     const order_direction = req.query.order_direction ? req.query.order_direction : 'asc';
 
     const paginator: Paginator = new Paginator(page, per_page);
