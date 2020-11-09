@@ -1,6 +1,7 @@
 import { Country } from '../Models/CountryModel';
 
 export default class ArcgisDataHandler {
+
   public mapCountry(element: any): Country {
     const country = {
       originalId: element.OBJECTID as number,
