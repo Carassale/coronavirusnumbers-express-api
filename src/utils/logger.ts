@@ -16,11 +16,7 @@ const _formatter = winston.format((info: any, _opts: any) => {
   }
 
   if (info instanceof Error) {
-    return {
-      message: info.message,
-      stack: info.stack,
-      ...info,
-    };
+    return info;
   }
 
   info.level = info.level.toUpperCase();
