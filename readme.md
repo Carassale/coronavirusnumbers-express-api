@@ -5,6 +5,9 @@ This is an api server to access data on coronavirus contagions.
 The API documentation can be consulted through the following [link](https://carassale.github.io/coronavirusnumbers-express-api)
 
 ## Prerequisites
+- [Node](https://nodejs.org/en/download) >= 12.0.0
+- [npm](https://nodejs.org/en/download) >= 6.0.0
+- [TypeScript](https://www.typescriptlang.org/download) >= 3.8.0
 
 ## Build
 To build the application you must run the following commands
