@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import MongoInitializer from './utils/mongo';
 import AppConfig from './config/AppConfig';
 import ApiRouter from './routes/ApiRouter';
-import agenda from './App/Jobs/AgendaJS';
+import agenda from './app/Jobs/AgendaJS';
 import Logger from './utils/logger';
 
 const cors = require('cors');

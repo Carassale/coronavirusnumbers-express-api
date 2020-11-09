@@ -6,8 +6,8 @@ import { Country } from '../../../Models/CountryModel';
 import Paginator from '../../../../utils/paginator';
 
 export default class CountryApiController {
-  private countryService: CountryService;
 
+  private countryService: CountryService;
   private countryDataHandler: CountryDataHandler;
 
   constructor() {

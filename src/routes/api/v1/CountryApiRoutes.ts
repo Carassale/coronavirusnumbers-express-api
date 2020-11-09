@@ -1,10 +1,8 @@
-import {
-  NextFunction, Request, Response, Router,
-} from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { query } from 'express-validator';
 
-import CountryApiController from '../../App/Controllers/Api/v1/CountryApiController';
-import ParamsValidation from '../../App/Middleware/ParamsValidation';
+import CountryApiController from '../../../app/Controllers/Api/v1/CountryApiController';
+import ParamsValidation from '../../../app/Middleware/ParamsValidation';
 
 const CountryApiRouter = Router({mergeParams: true});
 const controller = new CountryApiController();

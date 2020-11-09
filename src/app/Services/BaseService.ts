@@ -5,8 +5,8 @@ import BaseRepository from '../Repositories/BaseRepository';
 import { PaginatorInterface } from '../../utils/paginator';
 
 export default abstract class BaseService<T extends Document> {
-  protected repository: BaseRepository<T>;
 
+  protected repository: BaseRepository<T>;
   protected dataHandler: BaseDataHandler<T>;
 
   protected constructor(repository: BaseRepository<T>, dataHandler: BaseDataHandler<T>) {

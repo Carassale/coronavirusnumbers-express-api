@@ -1,8 +1,8 @@
 {
-    "name": "Orso Bruno APIs",
-    "version": "0.1.0",
-    "description": "Orso Bruno APIs Documentation",
-    "title": "Orso Bruno",
+    "name": "Corona Virus Numbers - API",
+    "version": "1.0.0",
+    "description": "Corona Virus Numbers APIs Documentation",
+    "title": "Corona Virus Numbers",
     "url" : "",
     "template": {
         "withCompare": false,
