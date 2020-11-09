@@ -4,6 +4,7 @@ import { PaginatorInterface } from '../../utils/paginator';
 import { ResponseError } from '../../utils/errors';
 
 export default abstract class BaseRepository<T extends Document> {
+
   baseModel: Model<T>;
 
   protected constructor(baseModel: Model<T>) {

@@ -5,8 +5,8 @@ import CountryService from '../Services/CountryService';
 import Logger from '../../utils/logger';
 
 export default class ArcgisHelper {
-  dataHandler: ArcgisDataHandler;
 
+  dataHandler: ArcgisDataHandler;
   countryService: CountryService;
 
   constructor() {
