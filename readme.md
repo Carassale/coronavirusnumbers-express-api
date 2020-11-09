@@ -2,7 +2,7 @@
 This is an api server to access data on coronavirus contagions.
 
 ## API documentation
-The bees at disposition can be consulted through the following [link](https://carassale.github.io/coronavirusnumbers-express-api)
+The API documentation can be consulted through the following [link](https://carassale.github.io/coronavirusnumbers-express-api)
 
 ## Prerequisites
 
