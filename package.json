@@ -1,12 +1,12 @@
 {
-  "name": "orso-bruno-server-node",
+  "name": "corona-virus-numbers-express-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "start": "node ./build/server.js",
-    "docs": "apidoc -i src/routes/api/Docs -o docs/"
+    "docs": "apidoc -i src/routes/api/ -o docs/"
   },
   "repository": {
     "type": "git",
